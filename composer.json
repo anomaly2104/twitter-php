@@ -1,0 +1,16 @@
+{
+    "name": "uditiiita/twitter-php",
+    "description": "Fetch and display tweets containing hashtag #custserv and have been re-tweeted at-least once",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Udit Agarwal",
+            "email": "hello@uditagarwal.com"
+        }
+    ],
+    "require": {
+        "abraham/twitteroauth": "0.6.4",
+        "uditiiita/php-utils": "0.0.1"
+    }
+}
