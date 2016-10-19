@@ -18,6 +18,18 @@ class TwitterClientTests extends TestCase {
         $this->assertArraySubset(["id" => "3"], $tweets[1]);
     }
     
+    public function testItReturnsTweetsIdsInStringType() {
+        $stub = $this->createMock(Abraham\TwitterOAuth\TwitterOAuth::class);
+        $stub->method('get')
+             ->willReturn($this->mockTweets());
+        
+        $twitterClient = new Uditiiita\TwitterClient($stub);
+        $tweets = $twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
+        
+        $this->assertInternalType('string', $tweets[0]["id"]);
+        $this->assertInternalType('string', $tweets[0]["id"]);
+    }
+    
     private function mockTweets() {
         return (object)["statuses" => [
             (object)["retweet_count" => 0, "id"=> 1],
