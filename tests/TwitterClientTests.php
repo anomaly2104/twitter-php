@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-require_once '../TwitterClient.php';
+require_once __DIR__.'/../TwitterClient.php';
 
 class TwitterClientTests extends TestCase {
     private $twitterClient;
