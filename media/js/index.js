@@ -28,9 +28,11 @@ $(document).ready(function () {
     function renderTweet(tweet) {
         console.log("rendering  tweet: ");
         console.log(tweet);
-
-        twttr.widgets.createTweet(tweet.id, document.getElementById('tweets'), {
-            cards: 'hidden'
+          
+        $('#tweets').append("<div id='" + tweet.id + "' class='col-md-4 col-lg-4'></div>");
+        twttr.widgets.createTweet(tweet.id, document.getElementById(tweet.id), {
+          cards: 'hidden',
+          conversation: 'none'
         });
     }
 });
