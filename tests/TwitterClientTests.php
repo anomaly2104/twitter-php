@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__.'/../TwitterClient.php';
+require_once __DIR__.'/../model/TwitterClient.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 class TwitterClientTests extends TestCase {

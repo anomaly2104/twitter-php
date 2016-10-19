@@ -4,7 +4,7 @@ $(document).ready(function () {
     });
     
     function fetchTweets(callback) {
-        $.getJSON("./getTweets.php", function (tweets) {
+        $.getJSON("./api/getTweets.php", function (tweets) {
             console.log("tweets fetched");
             console.log(tweets);
             twttr.ready(function () {
