@@ -5,13 +5,19 @@ use PHPUnit\Framework\TestCase;
 require_once '../TwitterClient.php';
 
 class TwitterClientTests extends TestCase {
-    public function testItReturnsOnlyAtleastOnceRetweetedTweets() {
+    private $twitterClient;
+
+    protected function setUp() {
+        parent::setUp();
         $stub = $this->createMock(Abraham\TwitterOAuth\TwitterOAuth::class);
         $stub->method('get')
              ->willReturn($this->mockTweets());
         
-        $twitterClient = new Uditiiita\TwitterClient($stub);
-        $tweets = $twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
+        $this->twitterClient = new Uditiiita\TwitterClient($stub);
+    }
+    
+    public function testItReturnsOnlyAtleastOnceRetweetedTweets() {
+        $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
         
         $this->assertEquals(2, count($tweets));
         $this->assertArraySubset(["id" => "2"], $tweets[0]);
@@ -19,15 +25,10 @@ class TwitterClientTests extends TestCase {
     }
     
     public function testItReturnsTweetsIdsInStringType() {
-        $stub = $this->createMock(Abraham\TwitterOAuth\TwitterOAuth::class);
-        $stub->method('get')
-             ->willReturn($this->mockTweets());
-        
-        $twitterClient = new Uditiiita\TwitterClient($stub);
-        $tweets = $twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
+        $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
         
         $this->assertInternalType('string', $tweets[0]["id"]);
-        $this->assertInternalType('string', $tweets[0]["id"]);
+        $this->assertInternalType('string', $tweets[1]["id"]);
     }
     
     private function mockTweets() {
