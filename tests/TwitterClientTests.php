@@ -6,8 +6,16 @@ require_once __DIR__.'/../model/TwitterClient.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 class TwitterClientTests extends TestCase {
+    /**
+     * Object of TwitterClient class to be tested.
+     * 
+     * @var \Uditiiita\TwitterClient
+     */
     private $twitterClient;
 
+    /**
+     * Setup the twitterClient object before running every test.
+     */
     protected function setUp() {
         parent::setUp();
         $stub = $this->createMock(Abraham\TwitterOAuth\TwitterOAuth::class);
@@ -17,6 +25,9 @@ class TwitterClientTests extends TestCase {
         $this->twitterClient = new Uditiiita\TwitterClient($stub);
     }
     
+    /**
+     * Test that it returns only those tweets which are retweeted atleast once.
+     */
     public function testItReturnsOnlyAtleastOnceRetweetedTweets() {
         $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
         
@@ -25,6 +36,9 @@ class TwitterClientTests extends TestCase {
         $this->assertArraySubset(["id" => "3"], $tweets[1]);
     }
     
+    /**
+     * Test that it returned tweets has id of type string.
+     */
     public function testItReturnsTweetsIdsInStringType() {
         $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
         
@@ -32,6 +46,10 @@ class TwitterClientTests extends TestCase {
         $this->assertInternalType('string', $tweets[1]["id"]);
     }
     
+    /**
+     * Sample data to be returned in place of mocked twitter call.
+     * @return Test tweets
+     */
     private function mockTweets() {
         return (object)["statuses" => [
             (object)["retweet_count" => 0, "id"=> 1],
