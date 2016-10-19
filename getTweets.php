@@ -13,4 +13,5 @@ $twitterClient = new TwitterClient($twitterOAuth);
 
 $tweets = $twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#custserv");
 
-print_r($tweets);
+header('Content-Type: application/json');
+echo json_encode($tweets);

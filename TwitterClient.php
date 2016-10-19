@@ -39,8 +39,14 @@ class TwitterClient {
     
     public function getTweetsWithHashTagAndMinimumOneRetweet($hashTag, $fetchCount = 100) {
         $tweetsWithHashTag = $this->getTweetsWithHashTag($hashTag, $fetchCount);
-        return array_filter($tweetsWithHashTag, function ($tweet) {
+        $tweetsWithMinRetweet = array_filter($tweetsWithHashTag, function ($tweet) {
             return $tweet -> retweet_count >= 1;
         });
+        
+        $result = [];
+        foreach ($tweetsWithMinRetweet as $tweet) {
+            array_push($result, ["id"=> strval($tweet -> id)]);
+        }
+        return $result;
     }
 }
