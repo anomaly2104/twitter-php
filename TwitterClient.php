@@ -17,30 +17,30 @@ namespace Uditiiita;
  */
 class TwitterClient {
     private $twitterOAuth;
-    
-    private $hashTag = "#custserv";
-    
     private $endpoint = 'search/tweets';
-    
-    private $fetchCount = 100;
     
     public function __construct(\Abraham\TwitterOAuth\TwitterOAuth $twitterOAuth) {
         $this->twitterOAuth = $twitterOAuth;
     }
     
-    public function getTweets() {
-        var_dump("fetching tweets for endpoint: ". $this->endpoint);
+    private function getTweetsWithHashTag($hashTag, $fetchCount) {
         try {
             $tweets = $this->twitterOAuth->get($this->endpoint, array(
-                "q" => $this->hashTag,
-                "count" => $this->fetchCount
+                "q" => $hashTag,
+                "count" => $fetchCount
             ));
-            print_r($tweets);
-            return $tweets;
+            return $tweets -> statuses;
         } catch (Exception $ex) {
             //TODO: Handle this.
             var_dump($ex);
             return array();
         }
+    }
+    
+    public function getTweetsWithHashTagAndMinimumOneRetweet($hashTag, $fetchCount = 100) {
+        $tweetsWithHashTag = $this->getTweetsWithHashTag($hashTag, $fetchCount);
+        return array_filter($tweetsWithHashTag, function ($tweet) {
+            return $tweet -> retweet_count >= 1;
+        });
     }
 }

@@ -11,4 +11,6 @@ $twitterOAuth = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_ACCESS_TOK
 
 $twitterClient = new TwitterClient($twitterOAuth);
 
-$twitterClient->getTweets();
+$tweets = $twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#custserv");
+
+print_r($tweets);
