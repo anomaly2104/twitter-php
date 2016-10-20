@@ -62,7 +62,7 @@ class TwitterClient {
      */
     public function getTweetsWithHashTagAndMinimumOneRetweet($hashTag, $beforeId = NULL, $fetchCount = 100) {
         $maxId = $beforeId - 1;
-//        var_dump($maxId);
+
         //First get the tweets matching given hastag.
         $tweetsWithHashTag = $this->searchTweets($hashTag, $maxId, $fetchCount);
         
