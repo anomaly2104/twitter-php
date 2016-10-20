@@ -29,7 +29,7 @@ class TwitterClientTests extends TestCase {
      * Test that it returns only those tweets which are retweeted atleast once.
      */
     public function testItReturnsOnlyAtleastOnceRetweetedTweets() {
-        $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
+        $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any");
         
         $this->assertEquals(2, count($tweets));
         $this->assertArraySubset(["id" => "2"], $tweets[0]);
@@ -40,7 +40,7 @@ class TwitterClientTests extends TestCase {
      * Test that it returned tweets has id of type string.
      */
     public function testItReturnsTweetsIdsInStringType() {
-        $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 100);
+        $tweets = $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any");
         
         $this->assertInternalType('string', $tweets[0]["id"]);
         $this->assertInternalType('string', $tweets[1]["id"]);
