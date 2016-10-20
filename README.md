@@ -48,7 +48,7 @@ A simple Twitter API client in PHP that fetches and displays Tweets those
 
 ## Author
 
-[Udit Agarwal], udit.ag@directi.com
+[Udit Agarwal], hello@uditagarwal.com
 
 [Composer]: https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
 [Register your app on Twitter]: https://apps.twitter.com/app/new
