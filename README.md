@@ -6,6 +6,10 @@ A simple Twitter API client in PHP that fetches and displays Tweets those
 * a) Have been re-Tweeted at least once and 
 * b) Contain the hashtag #custserv
 
+## DEMO
+
+https://twitter-client-php.herokuapp.com/
+
 ## Highlights
 
 * Configurable Search Term
