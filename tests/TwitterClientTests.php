@@ -12,17 +12,19 @@ class TwitterClientTests extends TestCase {
      * @var \Uditiiita\TwitterClient
      */
     private $twitterClient;
+    
+    private $twitterOAuthMock;
 
     /**
      * Setup the twitterClient object before running every test.
      */
     protected function setUp() {
         parent::setUp();
-        $stub = $this->createMock(Abraham\TwitterOAuth\TwitterOAuth::class);
-        $stub->method('get')
-             ->willReturn($this->mockTweets());
+        $this->twitterOAuthMock = $this->createMock(Abraham\TwitterOAuth\TwitterOAuth::class);
+        $this->twitterOAuthMock->method('get')
+                ->willReturn($this->mockTweets());
         
-        $this->twitterClient = new Uditiiita\TwitterClient($stub);
+        $this->twitterClient = new Uditiiita\TwitterClient($this->twitterOAuthMock);
     }
     
     /**
@@ -44,6 +46,44 @@ class TwitterClientTests extends TestCase {
         
         $this->assertInternalType('string', $tweets[0]["id"]);
         $this->assertInternalType('string', $tweets[1]["id"]);
+    }
+    
+    /**
+     * Test the final query for hashtag search contains exclude:retweets
+     */
+    public function testQueryContainsRetweetsExcluding() {
+        $this->twitterOAuthMock->expects($this->once())
+                ->method('get')
+                ->with($this->anything(), $this->callback(function($subject){
+                    $query = $subject["q"];
+                    return strpos($query, "exclude:retweets") != false;
+                }));
+        $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 3);
+    }
+    
+    /**
+     * Test It correctly uses before ID.
+     */
+    public function testItDoesNotReturnsTweetsWithIdMoreThanBeforeId() {
+        $this->twitterOAuthMock->expects($this->once())
+                ->method('get')
+                ->with($this->anything(), $this->callback(function($subject){
+                    return $subject["max_id"] == 2;
+                }));
+        $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 3);
+    }
+    
+    /**
+     * Test the final query for hashtag search contains exclude:retweets
+     */
+    public function testItCorrectlySendsFetchCount() {
+        $fetchCount = rand(1, 100);
+        $this->twitterOAuthMock->expects($this->once())
+                ->method('get')
+                ->with($this->anything(), $this->callback(function($subject) use ($fetchCount) {
+                            return $subject["count"] == $fetchCount;
+                }));
+        $this->twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#any", 3, $fetchCount);
     }
     
     /**
