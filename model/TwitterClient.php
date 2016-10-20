@@ -41,7 +41,7 @@ class TwitterClient {
     private function getTweetsWithHashTag($hashTag, $maxId, $fetchCount) {
         try {
             $tweets = $this->twitterOAuth->get($this->endpoint, array(
-                "q" => $hashTag,
+                "q" => $hashTag . " exclude:retweets",
                 "count" => $fetchCount,
                 "max_id" => $maxId
             ));
