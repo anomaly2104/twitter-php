@@ -34,6 +34,7 @@ class TwitterClient {
      * Fetch tweets matching a particular hashtag.
      * 
      * @param string $hashTag HashTag to search.
+     * @param int $maxId Max ID of the tweet in the result.
      * @param int $fetchCount Max number of tweets to get.
      * 
      * @return array List of tweets matching the hashtag.
@@ -56,11 +57,13 @@ class TwitterClient {
      * Fetch tweets matching a particular hashtag and are retweeted atleast once.
      * 
      * @param string $hashTag HashTag to search.
+     * @param int $beforeId Id of the tweet before which new tweets should be found.
      * @param int $fetchCount Maximum number of tweets to fetch frmo twitter.
      * 
      * @return array List of tweets matching the hashtag and are retweeted atlease once.
      */
     public function getTweetsWithHashTagAndMinimumOneRetweet($hashTag, $beforeId = NULL, $fetchCount = 100) {
+        //$beforeId should not be included in the result
         $maxId = $beforeId - 1;
 
         //First get the tweets matching given hastag.
@@ -82,6 +85,9 @@ class TwitterClient {
         return $result;
     }
     
+    /**
+     * Creates new twitter query with excluded retweets.
+     */
     public function queryWithExcludedRetweets($query) {
         return $query . " exclude:retweets";
     }
