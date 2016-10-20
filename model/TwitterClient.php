@@ -38,7 +38,7 @@ class TwitterClient {
      * 
      * @return array List of tweets matching the hashtag.
      */
-    private function getTweetsWithHashTag($hashTag, $maxId, $fetchCount) {
+    private function searchTweets($query, $maxId, $fetchCount) {
         try {
             $tweets = $this->twitterOAuth->get($this->endpoint, array(
                 "q" => $hashTag . " exclude:retweets",
@@ -64,7 +64,7 @@ class TwitterClient {
         $maxId = $beforeId - 1;
 //        var_dump($maxId);
         //First get the tweets matching given hastag.
-        $tweetsWithHashTag = $this->getTweetsWithHashTag($hashTag, $maxId, $fetchCount);
+        $tweetsWithHashTag = $this->searchTweets($hashTag, $maxId, $fetchCount);
         
         //Filter tweets which are never retweeted.
         $tweetsWithMinRetweet = array_filter($tweetsWithHashTag, function ($tweet) {
