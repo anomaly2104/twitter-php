@@ -1,14 +1,39 @@
 $(document).ready(function () {
-    fetchTweets(function (tweets) {
-        renderTweets(tweets);
-    });
+    var maxId = null;
+    var isFetching = false;
+    
+    function fetchAndRenderTweets() {
+        if (isFetching) {
+            console.log("Already fetching!");
+            return;
+        }
+        isFetching = true;
+        fetchTweets(function (tweets) {
+            renderTweets(tweets);
+            updateMaxId(tweets);
+            isFetching = false;
+        });
+    }
+    
+    function getAPIURL() {
+        return maxId === null ? "./api/getTweets.php" : "./api/getTweets.php?beforeId=" + maxId;
+    }
     
     function fetchTweets(callback) {
-        $.getJSON("./api/getTweets.php", function (tweets) {
+        $.getJSON(getAPIURL(), function (tweets) {
             twttr.ready(function () {
                 callback(tweets);
             });
         });
+    }
+    
+    function updateMaxId(tweets) {
+       for (var i = 0; i < tweets.length; ++i) {
+            var tweet = tweets[i];
+            if (maxId == null || maxId > tweet.id) {
+                maxId = tweet.id;
+            }
+        }
     }
     
     function renderTweets(tweets) {
@@ -25,6 +50,14 @@ $(document).ready(function () {
           conversation: 'none'
         });
     }
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            console.log("bottom!");
+            fetchAndRenderTweets();
+        }
+    });
+    
+    fetchAndRenderTweets();
 });
 
     

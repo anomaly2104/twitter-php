@@ -14,7 +14,12 @@ $twitterOAuth = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_ACCESS_TOK
 
 $twitterClient = new TwitterClient($twitterOAuth);
 
-$tweets = $twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#custserv");
+$beforeId = NULL;
+if (isset($_REQUEST['beforeId'])) {
+    $beforeId = $_REQUEST['beforeId'];
+}
+
+$tweets = $twitterClient->getTweetsWithHashTagAndMinimumOneRetweet("#custserv", $beforeId);
 
 header('Content-Type: application/json');
 echo json_encode($tweets);
